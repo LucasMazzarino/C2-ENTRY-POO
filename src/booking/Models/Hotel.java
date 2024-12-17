@@ -11,6 +11,7 @@ public class Hotel {
     private String ciudad;
     private double estrellas;
     private TipoAlojamiento tipoAlojamiento;
+    private List<String> actividades;
 
     public Hotel(String nombre, String detalles, String ciudad, double estrellas, TipoAlojamiento tipoAlojamiento) {
         this.nombre = nombre;
@@ -20,7 +21,17 @@ public class Hotel {
         this.ciudad = ciudad;
         this.estrellas = estrellas;
         this.tipoAlojamiento = tipoAlojamiento;
+        this.actividades = new ArrayList<>();
     }
+
+    public List<String> getActividades() {
+        return actividades;
+    }
+
+    public void setActividades(List<String> actividades) {
+        this.actividades = actividades;
+    }
+
 
     public String getNombre() {
         return nombre;
