@@ -1,6 +1,7 @@
 package booking.Services;
 
 import booking.Models.Hotel;
+import booking.Models.Reserva;
 import booking.Models.TipoAlojamiento;
 import booking.Models.Habitacion;
 import booking.Interface.IHotelService;
@@ -9,6 +10,8 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class HotelService implements IHotelService {
     private final List<Hotel> hoteles;
@@ -145,4 +148,107 @@ public class HotelService implements IHotelService {
             }
         }
     }
+
+    public void realizarReserva(String nombreHotel, String nombreCliente, String apellidoCliente, String emailCliente, String nacionalidad, String telefono, LocalDate entrada, LocalDate salida, int cantNinos, int cantAdultos, int cantHabitaciones, String tipoHabitacion, String horaLlegada) {
+        for (Hotel hotel : hoteles) {
+            if (hotel.getNombre().equalsIgnoreCase(nombreHotel)) {
+                Reserva reserva = new Reserva(nombreCliente, apellidoCliente, emailCliente, telefono, entrada, salida, cantNinos, cantAdultos, cantHabitaciones, tipoHabitacion, horaLlegada, nacionalidad, nombreHotel);
+                hotel.getReservas().add(reserva);
+
+                for (Habitacion habitacion : hotel.getHabitaciones()) {
+                    if (habitacion.getTipo().equalsIgnoreCase(tipoHabitacion)) {
+                        for (int dia = entrada.getDayOfMonth(); dia <= salida.getDayOfMonth(); dia++) {
+                            habitacion.reservar(dia);
+                        }
+                        break;
+                    }
+                }
+                System.out.println("Se ha realizado la reserva con éxito");
+                System.out.println(mostrarInformacionReserva(reserva));
+                return;
+            }
+        }
+    }
+
+    public void actualizarReserva(String email, LocalDate fechaNacimiento) {
+        Scanner scanner = new Scanner(System.in);
+        for (Hotel hotel : hoteles) {
+            for (Reserva reserva : hotel.getReservas()) {
+                if (reserva.getEmailCliente().equalsIgnoreCase(email)) {
+                    System.out.println("Reserva encontrada:");
+                    System.out.println(mostrarInformacionReserva(reserva));
+
+                    System.out.println("¿Qué desea cambiar?");
+                    System.out.println("1. Cambiar habitación");
+                    System.out.println("2. Cambiar alojamiento");
+                    int opcion = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (opcion == 1) {
+                        System.out.println("Habitaciones disponibles:");
+                        List<Habitacion> habitacionesDisponibles = confirmarHabitaciones(hotel.getNombre(), reserva.getEntrada(), reserva.getSalida(), reserva.getCantAdultos(), reserva.getCantNinos(), 1)
+                                .stream()
+                                .filter(h -> !h.getTipo().equalsIgnoreCase(reserva.getTipoHabitacion()))
+                                .collect(Collectors.toList());
+
+                        for (int i = 0; i < habitacionesDisponibles.size(); i++) {
+                            System.out.println((i + 1) + ". " + habitacionesDisponibles.get(i).getTipo());
+                        }
+                        System.out.println("Seleccione la nueva habitación:");
+                        int nuevaHabitacionIndex = scanner.nextInt() - 1;
+                        scanner.nextLine();
+
+                        reserva.setTipoHabitacion(habitacionesDisponibles.get(nuevaHabitacionIndex).getTipo());
+                        System.out.println("La habitación ha sido cambiada con éxito.");
+                    } else if (opcion == 2) {
+                        System.out.println("Seleccione un nuevo hotel:");
+                        for (int i = 0; i < hoteles.size(); i++) {
+                            System.out.println((i + 1) + ". " + hoteles.get(i).getNombre());
+                        }
+                        int nuevoHotelIndex = scanner.nextInt() - 1;
+                        scanner.nextLine();
+                        String nuevoHotel = hoteles.get(nuevoHotelIndex).getNombre();
+
+                        System.out.println("Tipos de habitación disponibles:");
+                        List<Habitacion> habitaciones = hoteles.get(nuevoHotelIndex).getHabitaciones();
+                        for (int i = 0; i < habitaciones.size(); i++) {
+                            System.out.println((i + 1) + ". " + habitaciones.get(i).getTipo());
+                        }
+                        System.out.println("Ingrese el número del tipo de habitación:");
+                        int tipoHabitacionIndex = scanner.nextInt() - 1;
+                        scanner.nextLine();
+                        String tipoHabitacion = habitaciones.get(tipoHabitacionIndex).getTipo();
+
+                        realizarReserva(nuevoHotel, reserva.getNombreCliente(), reserva.getApellidoCliente(), reserva.getEmailCliente(), reserva.getNacionalidad(), reserva.getTelefono(), reserva.getEntrada(), reserva.getSalida(), reserva.getCantNinos(), reserva.getCantAdultos(), reserva.getCantHabitaciones(), tipoHabitacion, reserva.getHoraLlegada());
+                        hotel.getReservas().remove(reserva);
+                        System.out.println("La reserva ha sido cambiada de alojamiento con éxito.");
+                    } else {
+                        System.out.println("Opción no válida.");
+                    }
+                    return;
+                }
+            }
+        }
+        System.out.println("No se encontró ninguna reserva con los datos proporcionados.");
+    }
+
+
+    public String mostrarInformacionReserva(Reserva reserva) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Detalles de la Reserva:\n");
+        sb.append("Nombre del Hotel: ").append(reserva.getNombreHotel()).append("\n");
+        sb.append("Nombre del Cliente: ").append(reserva.getNombreCliente()).append(" ").append(reserva.getApellidoCliente()).append("\n");
+        sb.append("Email: ").append(reserva.getEmailCliente()).append("\n");
+        sb.append("Teléfono: ").append(reserva.getTelefono()).append("\n");
+        sb.append("Fecha de Entrada: ").append(reserva.getEntrada()).append("\n");
+        sb.append("Fecha de Salida: ").append(reserva.getSalida()).append("\n");
+        sb.append("Cantidad de Adultos: ").append(reserva.getCantAdultos()).append("\n");
+        sb.append("Cantidad de Niños: ").append(reserva.getCantNinos()).append("\n");
+        sb.append("Cantidad de Habitaciones: ").append(reserva.getCantHabitaciones()).append("\n");
+        sb.append("Tipo de Habitación: ").append(reserva.getTipoHabitacion()).append("\n");
+        sb.append("Hora de Llegada: ").append(reserva.getHoraLlegada()).append("\n");
+        sb.append("Nacionalidad: ").append(reserva.getNacionalidad()).append("\n");
+        return sb.toString();
+    }
+
 }

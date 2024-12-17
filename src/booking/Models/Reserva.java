@@ -14,8 +14,24 @@ public class Reserva {
     private int cantHabitaciones;
     private String tipoHabitacion;
     private String horaLlegada;
+    private String nacionalidad;
+    private String nombreHotel;
 
-    public Reserva(String nombreCliente, String apellidoCliente, String emailCliente, String telefono, LocalDate entrada, LocalDate salida, int cantNinos, int cantAdultos, int cantHabitaciones, String tipoHabitacion, String horaLlegada) {
+    public Reserva(
+            String nombreCliente,
+            String apellidoCliente,
+            String emailCliente,
+            String telefono,
+            LocalDate entrada,
+            LocalDate salida,
+            int cantNinos,
+            int cantAdultos,
+            int cantHabitaciones,
+            String tipoHabitacion,
+            String horaLlegada,
+            String nacionalidad,
+            String nombreHotel
+            ) {
         this.nombreCliente = nombreCliente;
         this.apellidoCliente = apellidoCliente;
         this.emailCliente = emailCliente;
@@ -27,6 +43,16 @@ public class Reserva {
         this.cantHabitaciones = cantHabitaciones;
         this.tipoHabitacion = tipoHabitacion;
         this.horaLlegada = horaLlegada;
+        this.nacionalidad = nacionalidad;
+        this.nombreHotel = nombreHotel;
+    }
+
+    public String getNombreHotel() {
+        return nombreHotel;
+    }
+
+    public void setNombreHotel(String nombreHotel) {
+        this.nombreHotel = nombreHotel;
     }
 
     public String getNombreCliente() {
@@ -117,6 +143,14 @@ public class Reserva {
         this.horaLlegada = horaLlegada;
     }
 
+    public String getNacionalidad() {
+        return nacionalidad;
+    }
+
+    public void setNacionalidad(String nacionalidad) {
+        this.nacionalidad = nacionalidad;
+    }
+
     @Override
     public String toString() {
         return "Reserva{" +
@@ -131,6 +165,9 @@ public class Reserva {
                 ", cantHabitaciones=" + cantHabitaciones +
                 ", tipoHabitacion='" + tipoHabitacion + '\'' +
                 ", horaLlegada='" + horaLlegada + '\'' +
+                ", nacionalidad='" + nacionalidad + '\'' +
+                ", nombreHotel='" + nombreHotel + '\'' +
                 '}';
     }
+
 }

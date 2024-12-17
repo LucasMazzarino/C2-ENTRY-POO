@@ -32,7 +32,6 @@ public class Hotel {
         this.actividades = actividades;
     }
 
-
     public String getNombre() {
         return nombre;
     }
