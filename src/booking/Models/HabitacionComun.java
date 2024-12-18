@@ -9,6 +9,7 @@ public class HabitacionComun extends Habitacion {
     @Override
     public double calcularCosto(int[] dias) {
         double costo = getTarifaPorNoche() * dias.length;
+
         return aplicarAjustesPorDias(costo, dias);
     }
 }
