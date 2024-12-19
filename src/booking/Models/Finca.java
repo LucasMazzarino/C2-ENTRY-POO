@@ -1,19 +1,8 @@
 package booking.Models;
 
-public class Hotel extends Alojamiento {
-    private DiaDeSol diaDeSol;
-
-    public Hotel(String nombre, String detalles, String ciudad, double estrellas, DiaDeSol diaDeSol) {
+public class Finca extends Alojamiento {
+    public Finca(String nombre, String detalles, String ciudad, double estrellas) {
         super(nombre, detalles, ciudad, estrellas);
-        this.diaDeSol = diaDeSol;
-    }
-
-    public DiaDeSol getDiaDeSol() {
-        return diaDeSol;
-    }
-
-    public void setDiaDeSol(DiaDeSol diaDeSol) {
-        this.diaDeSol = diaDeSol;
     }
 
     @Override

@@ -1,27 +1,34 @@
 package booking.Models;
 
-public abstract class Habitacion {
-    private String tipo;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Habitacion {
+    private TipoHabitacion tipo;
     private double tarifaPorNoche;
     private String detalles;
     private boolean[] disponibilidad;
     private int cantNinos;
     private int cantAdultos;
+    private int cantidadDisponible;
+    private List<Reserva> reservas;
 
-    public Habitacion(String tipo, double tarifaPorNoche, String detalles, int diasDelMes, int cantNinos, int cantAdultos) {
+    public Habitacion(TipoHabitacion tipo, double tarifaPorNoche, String detalles, int diasDelMes, int cantNinos, int cantAdultos, int cantidadDisponible) {
         this.tipo = tipo;
         this.tarifaPorNoche = tarifaPorNoche;
         this.detalles = detalles;
         this.disponibilidad = new boolean[diasDelMes];
         this.cantNinos = cantNinos;
         this.cantAdultos = cantAdultos;
+        this.cantidadDisponible = cantidadDisponible;
+        this.reservas = new ArrayList<>();
     }
 
-    public String getTipo() {
+    public TipoHabitacion getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoHabitacion tipo) {
         this.tipo = tipo;
     }
 
@@ -41,16 +48,12 @@ public abstract class Habitacion {
         this.detalles = detalles;
     }
 
-    public boolean isDisponible(int dia) {
-        return !disponibilidad[dia];
+    public boolean[] getDisponibilidad() {
+        return disponibilidad;
     }
 
-    public void reservar(int dia) {
-        disponibilidad[dia] = true;
-    }
-
-    public void liberar(int dia) {
-        disponibilidad[dia] = false;
+    public void setDisponibilidad(boolean[] disponibilidad) {
+        this.disponibilidad = disponibilidad;
     }
 
     public int getCantNinos() {
@@ -69,43 +72,28 @@ public abstract class Habitacion {
         this.cantAdultos = cantAdultos;
     }
 
-    protected double aplicarAjustesPorDias(double costo, int[] dias) {
-        boolean ultimoCincoDias = false;
-        boolean diezAlQuince = false;
-        boolean cincoAlDiez = false;
-
-        for (int dia : dias) {
-            if (dia > 25) {
-                ultimoCincoDias = true;
-            }
-            if (dia >= 10 && dia <= 15) {
-                diezAlQuince = true;
-            }
-            if (dia >= 5 && dia <= 10) {
-                cincoAlDiez = true;
-            }
-        }
-
-        if (ultimoCincoDias) {
-            costo *= 1.15;
-        } else if (diezAlQuince) {
-            costo *= 1.10;
-        } else if (cincoAlDiez) {
-            costo *= 0.92;
-        }
-
-        return costo;
+    public int getCantidadDisponible() {
+        return cantidadDisponible;
     }
 
-    public abstract double calcularCosto(int[] dias);
+    public void setCantidadDisponible(int cantidadDisponible) {
+        this.cantidadDisponible = cantidadDisponible;
+    }
 
-    // Sobrecarga
-    public double calcularCosto(int dia) {
-        return calcularCosto(new int[]{dia});
+    public List<Reserva> getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(List<Reserva> reservas) {
+        this.reservas = reservas;
+    }
+
+    public void addReserva(Reserva reserva) {
+        reservas.add(reserva);
     }
 
     @Override
     public String toString() {
-        return "Tipo: " + tipo + ", Tarifa por noche: " + tarifaPorNoche + ", Detalles: " + detalles + ", Capacidad: " + cantAdultos + " adultos y " + cantNinos + " niños";
+        return "Tipo: " + tipo + ", Tarifa por noche: " + tarifaPorNoche + ", Detalles: " + detalles + ", Capacidad: " + cantAdultos + " adultos y " + cantNinos + " niños, Cantidad disponible: " + cantidadDisponible;
     }
 }

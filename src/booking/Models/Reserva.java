@@ -3,88 +3,50 @@ package booking.Models;
 import java.time.LocalDate;
 
 public class Reserva {
-    private String nombreCliente;
-    private String apellidoCliente;
-    private String emailCliente;
-    private String telefono;
+    private Cliente cliente;
+    private Habitacion habitacion;
     private LocalDate entrada;
     private LocalDate salida;
+    private String horaLlegada;
     private int cantNinos;
     private int cantAdultos;
     private int cantHabitaciones;
-    private String tipoHabitacion;
-    private String horaLlegada;
-    private String nacionalidad;
-    private String nombreHotel;
+    private Alojamiento alojamiento;
 
-    public Reserva(
-            String nombreCliente,
-            String apellidoCliente,
-            String emailCliente,
-            String telefono,
-            LocalDate entrada,
-            LocalDate salida,
-            int cantNinos,
-            int cantAdultos,
-            int cantHabitaciones,
-            String tipoHabitacion,
-            String horaLlegada,
-            String nacionalidad,
-            String nombreHotel
-            ) {
-        this.nombreCliente = nombreCliente;
-        this.apellidoCliente = apellidoCliente;
-        this.emailCliente = emailCliente;
-        this.telefono = telefono;
+    public Reserva(Cliente cliente, Habitacion habitacion,Alojamiento alojamiento, LocalDate entrada, LocalDate salida, String horaLlegada, int cantNinos, int cantAdultos, int cantHabitaciones) {
+        this.cliente = cliente;
+        this.habitacion = habitacion;
+        this.alojamiento = alojamiento;
         this.entrada = entrada;
         this.salida = salida;
+        this.horaLlegada = horaLlegada;
         this.cantNinos = cantNinos;
         this.cantAdultos = cantAdultos;
         this.cantHabitaciones = cantHabitaciones;
-        this.tipoHabitacion = tipoHabitacion;
-        this.horaLlegada = horaLlegada;
-        this.nacionalidad = nacionalidad;
-        this.nombreHotel = nombreHotel;
     }
 
-    public String getNombreHotel() {
-        return nombreHotel;
+    public void setAlojamiento(Alojamiento alojamiento) {
+        this.alojamiento = alojamiento;
     }
 
-    public void setNombreHotel(String nombreHotel) {
-        this.nombreHotel = nombreHotel;
+    public Alojamiento getAlojamiento() {
+        return alojamiento;
     }
 
-    public String getNombreCliente() {
-        return nombreCliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setNombreCliente(String nombreCliente) {
-        this.nombreCliente = nombreCliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
-    public String getApellidoCliente() {
-        return apellidoCliente;
+    public Habitacion getHabitacion() {
+        return habitacion;
     }
 
-    public void setApellidoCliente(String apellidoCliente) {
-        this.apellidoCliente = apellidoCliente;
-    }
-
-    public String getEmailCliente() {
-        return emailCliente;
-    }
-
-    public void setEmailCliente(String emailCliente) {
-        this.emailCliente = emailCliente;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setHabitacion(Habitacion habitacion) {
+        this.habitacion = habitacion;
     }
 
     public LocalDate getEntrada() {
@@ -101,6 +63,14 @@ public class Reserva {
 
     public void setSalida(LocalDate salida) {
         this.salida = salida;
+    }
+
+    public String getHoraLlegada() {
+        return horaLlegada;
+    }
+
+    public void setHoraLlegada(String horaLlegada) {
+        this.horaLlegada = horaLlegada;
     }
 
     public int getCantNinos() {
@@ -127,47 +97,17 @@ public class Reserva {
         this.cantHabitaciones = cantHabitaciones;
     }
 
-    public String getTipoHabitacion() {
-        return tipoHabitacion;
-    }
-
-    public void setTipoHabitacion(String tipoHabitacion) {
-        this.tipoHabitacion = tipoHabitacion;
-    }
-
-    public String getHoraLlegada() {
-        return horaLlegada;
-    }
-
-    public void setHoraLlegada(String horaLlegada) {
-        this.horaLlegada = horaLlegada;
-    }
-
-    public String getNacionalidad() {
-        return nacionalidad;
-    }
-
-    public void setNacionalidad(String nacionalidad) {
-        this.nacionalidad = nacionalidad;
-    }
-
     @Override
     public String toString() {
         return "Reserva{" +
-                "nombreCliente='" + nombreCliente + '\'' +
-                ", apellidoCliente='" + apellidoCliente + '\'' +
-                ", emailCliente='" + emailCliente + '\'' +
-                ", telefono='" + telefono + '\'' +
+                "cliente=" + cliente +
+                ", habitacion=" + habitacion +
                 ", entrada=" + entrada +
                 ", salida=" + salida +
+                ", horaLlegada='" + horaLlegada + '\'' +
                 ", cantNinos=" + cantNinos +
                 ", cantAdultos=" + cantAdultos +
                 ", cantHabitaciones=" + cantHabitaciones +
-                ", tipoHabitacion='" + tipoHabitacion + '\'' +
-                ", horaLlegada='" + horaLlegada + '\'' +
-                ", nacionalidad='" + nacionalidad + '\'' +
-                ", nombreHotel='" + nombreHotel + '\'' +
                 '}';
     }
-
 }
